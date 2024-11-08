@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копіюємо всі файли проекту в контейнер
 COPY . /app
 
-# Відкриваємо порт 8000 для сервера Django
-EXPOSE 8000
+# Відкриваємо порт 11111 для сервера Django
+EXPOSE 11111
 
 # Запускаємо сервер Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:11111"]
