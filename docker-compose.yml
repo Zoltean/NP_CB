@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:13
@@ -22,6 +24,11 @@ services:
       - db
       - redis
     environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=jet
+      - POSTGRES_PASSWORD=Toxik666
+      - DB_HOST=db
+      - DB_PORT=5432
       - DATABASE_URL=postgres://jet:Toxik666@db:5432/mydb
     develop:
       watch:
@@ -32,5 +39,34 @@ services:
             - "*.pyc"
             - "__pycache__/"
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: np_cb-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - redis
+      - db
+    networks:
+      - np_cb_default
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: np_cb-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Пароль для входу в Grafana
+    ports:
+      - "3000:3000"  # Порт для доступу до Grafana
+    depends_on:
+      - prometheus
+    networks:
+      - np_cb_default
+
 volumes:
   postgres_data:
+
+networks:
+  np_cb_default:
+    driver: bridge

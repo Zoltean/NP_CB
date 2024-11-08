@@ -7,7 +7,7 @@ WORKDIR /app
 # Копіюємо файл вимог (requirements.txt) в контейнер
 COPY requirements.txt /app/
 
-# Встановлюємо залежності, зокрема Django
+# Встановлюємо залежності, зокрема Django та django-allauth
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копіюємо всі файли проекту в контейнер
